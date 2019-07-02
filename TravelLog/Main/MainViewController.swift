@@ -9,6 +9,7 @@
 import UIKit
 import Kingfisher
 import UserNotifications
+import FirebaseAuth
 
 class MainViewController: UIViewController {
     let manager = LocalNotificationManager()
@@ -38,7 +39,7 @@ class MainViewController: UIViewController {
 
     }
     override func viewWillAppear(_ animated: Bool) {
-        //manager.notifications = []
+        self.modelManager.userID = (Auth.auth().currentUser?.uid)!
         
         modelManager.getNoVisitedPlacesVisitedOrPlanned(completion: {place, error in
             if let place = place{

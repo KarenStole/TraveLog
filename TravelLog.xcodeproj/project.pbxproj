@@ -138,7 +138,6 @@
 		2C1926AC22B9B444000BEE93 /* Places */ = {
 			isa = PBXGroup;
 			children = (
-				2CB47C8522C01A5200BE7722 /* PlannedPlacesViewController.swift */,
 				2C1926AD22B9B459000BEE93 /* Place.swift */,
 				2CEEFF6522BFC2540034C4DB /* PlaceViewController.swift */,
 				2CEEFF6722BFC52A0034C4DB /* PlaceImagesCollectionViewCell.swift */,
@@ -260,6 +259,7 @@
 		2CE7A8A922B30EC800ECFBE5 /* VisitedPlaces */ = {
 			isa = PBXGroup;
 			children = (
+				2CB47C8522C01A5200BE7722 /* PlannedPlacesViewController.swift */,
 				2CDFC7AA22B68DFB0008C60D /* MyPlacesCollectionViewCell.swift */,
 				2CE7A89F22B305BD00ECFBE5 /* VisitedPlacesViewController.swift */,
 				2CB47C8222BFFA1C00BE7722 /* VisitedPlaces.swift */,

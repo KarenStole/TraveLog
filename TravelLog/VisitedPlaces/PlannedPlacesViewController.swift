@@ -7,6 +7,12 @@
 //
 
 import UIKit
+import FirebaseAuth
+
+/*
+ View Controller in charge of present the views of the Planned Places section.
+ List the places which the user plan before
+ */
 
 class PlannedPlacesViewController: UIViewController {
     let modelController = ModelManager.sharedModelManager
@@ -20,8 +26,13 @@ class PlannedPlacesViewController: UIViewController {
 
         // Do any additional setup after loading the view.
     }
-    
+    /*
+     Get the list of planned places from firebase database.
+     If there is no results, no result's label is shown.
+     If an error comes, an alert is shown
+     */
     override func viewWillAppear(_ animated: Bool) {
+        modelController.userID = (Auth.auth().currentUser?.uid)!
         noResultLabel.isHidden = true
         modelController.getPlacesFromDatabase(completion: { places, error in
             if let places = places{
@@ -61,12 +72,17 @@ class PlannedPlacesViewController: UIViewController {
 }
 
 
+/*
+ Setting the numbers of item in the section of the collection view
+ */
 extension PlannedPlacesViewController : UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
             return visitedPlaces.count
         
     }
-    
+    /*
+     Setting the information of each cells. The planned date is formatted to  -> 23 Month, 2019
+     */
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "visitedCell", for: indexPath) as! MyPlacesCollectionViewCell
         if(visitedPlaces.count != 0){
@@ -79,6 +95,12 @@ extension PlannedPlacesViewController : UICollectionViewDelegate, UICollectionVi
 
         return cell
     }
+    
+    /*
+     This VC shows two differets VC depends from the option selected.
+     If the Map's button is touched, MapViewController is shown passing the list of planned places.
+     If a cell is touched, PlaceViewController to show the information of the place
+     */
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if segue.destination is PlaceViewController{

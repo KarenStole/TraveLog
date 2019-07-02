@@ -8,6 +8,7 @@
 
 import UIKit
 import Kingfisher
+import FirebaseAuth
 
 class SearchViewController: UIViewController {
     let modelController = ModelManager.sharedModelManager
@@ -33,6 +34,7 @@ class SearchViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        
         modelController.getCountriesFromDatabase (completion: { countries, error in
             if let countries = countries{
                 self.listOfCountries = countries

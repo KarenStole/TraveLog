@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class VisitedPlacesViewController: UIViewController {
     let modelController = ModelManager.sharedModelManager
@@ -15,7 +16,8 @@ class VisitedPlacesViewController: UIViewController {
     
     @IBOutlet weak var placesVisitedCollectionView: UICollectionView!
     
-    @IBOutlet weak var noPlacesVisitedLabel: UICollectionView!
+    @IBOutlet weak var noPlacesVisitedLabel: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -23,6 +25,7 @@ class VisitedPlacesViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        modelController.userID = (Auth.auth().currentUser?.uid)!
         noPlacesVisitedLabel.isHidden = true
         modelController.getPlacesFromDatabase(completion: { places, error in
             if let places = places{

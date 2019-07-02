@@ -15,7 +15,7 @@ class ModelManager {
     static let sharedModelManager = ModelManager()
     let notification = LocalNotificationManager()
     var ref: DatabaseReference!
-    let userID = Auth.auth().currentUser!.uid
+    var userID = ""
     
     
     private init(){

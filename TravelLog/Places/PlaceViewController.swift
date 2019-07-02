@@ -8,7 +8,11 @@
 
 import UIKit
 import MapKit
-
+import FirebaseAuth
+/*
+ VC that show all the details of a place:
+ Ubication, images, name and description.
+ */
 class PlaceViewController: UIViewController {
 
     var place : Place?
@@ -25,6 +29,10 @@ class PlaceViewController: UIViewController {
     @IBOutlet weak var descriptionText: UITextView!
     @IBOutlet weak var ubicationMapView: MKMapView!
     @IBOutlet weak var pageControl: UIPageControl!
+    
+    /*
+     Seting the views values, such as labels values, map annotations, and automatic banner
+     */
     override func viewDidLoad() {
         super.viewDidLoad()
         ubicationMapView.layer.borderWidth = 2.0
@@ -43,10 +51,19 @@ class PlaceViewController: UIViewController {
         }
 
     }
+    override func viewWillAppear(_ animated: Bool) {
+        modelController.userID = (Auth.auth().currentUser?.uid)!
+    }
+    
+    /*
+     Center the map in the annotaton in a specific radius
+     */
     func centerMapOnLocation(location: CLLocation) {
         let coordinateRegion = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: regionRadius, longitudinalMeters: regionRadius)
         ubicationMapView.setRegion(coordinateRegion, animated: true)
     }
+    
+    /**/
     @objc func changeImage(){
         if count < (place?.photos.count)!{
             let index = IndexPath.init(item: count, section: 0)
