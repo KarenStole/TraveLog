@@ -13,17 +13,29 @@ class PlannedPlacesViewController: UIViewController {
     var visitedPlaces : [VisitedPlaces] = []
     var place : Place?
 
+    @IBOutlet weak var noResultLabel: UILabel!
     @IBOutlet weak var plannedPlacesCollectionView: UICollectionView!
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        // Do any additional setup after loading the view.
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        noResultLabel.isHidden = true
         modelController.getPlacesFromDatabase(completion: { places, error in
             if let places = places{
                 self.modelController.getPlacesIDPlanedByUID(uid: self.modelController.userID, places: places, completion: { visitedPlaces, error in
+
                     if let visitedPlace = visitedPlaces{
+                        if((visitedPlaces?.isEmpty)!){
+                            self.noResultLabel.isHidden = false
+                        }
                         self.visitedPlaces = visitedPlace
                         self.plannedPlacesCollectionView.reloadData()
                     }
                     if let error = error{
+                        self.noResultLabel.isHidden = false
                         let alert = UIAlertController(title: "Something went wrong!", message: "Sorry, we're having some problems. Retry in some minutes", preferredStyle: .alert)
                         alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
                         self.present(alert, animated: true)
@@ -42,7 +54,6 @@ class PlannedPlacesViewController: UIViewController {
             }
             
         })
-        // Do any additional setup after loading the view.
     }
     @IBAction func goToMap(_ sender: Any) {
         performSegue(withIdentifier: "goToMap", sender: self)
@@ -52,13 +63,7 @@ class PlannedPlacesViewController: UIViewController {
 
 extension PlannedPlacesViewController : UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if(visitedPlaces.count == 0){
-            return 1
-        }
-        else{
             return visitedPlaces.count
-
-        }
         
     }
     
@@ -70,16 +75,8 @@ extension PlannedPlacesViewController : UICollectionViewDelegate, UICollectionVi
             let dateFormatterPrint = DateFormatter()
             dateFormatterPrint.dateFormat = "dd MMM,yyyy"
             cell.visitDateLabel.text = dateFormatterPrint.string(from: visitedPlaces[indexPath.row].date)
-        }else{
-            cell.placeImageView.kf.setImage(with: URL(string: "https://cdn.dribbble.com/users/24885/screenshots/1797793/events-empty-data-set_1x.png"))
-            cell.placeNameLabel.text = ""
-            cell.visitDateLabel.text = ""
         }
 
-        
-        
-        
-        
         return cell
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

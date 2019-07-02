@@ -15,7 +15,8 @@ class PlaceViewController: UIViewController {
     var modelController = ModelManager.sharedModelManager
     let regionRadius: CLLocationDistance = 1000
     let annotation = MKPointAnnotation()
-    
+    var timer = Timer()
+    var count = 0
 
     @IBOutlet weak var placeNameLabel: UILabel!
     @IBOutlet weak var imagesCollectionView: UICollectionView!
@@ -35,15 +36,34 @@ class PlaceViewController: UIViewController {
         ubicationMapView.addAnnotation(annotation)
         placeNameLabel.text = place?.name
         descriptionText.text = place?.description
+        pageControl.numberOfPages = (place?.photos.count)!
+        pageControl.currentPage = 0
+        DispatchQueue.main.async {
+            self.timer = Timer.scheduledTimer(timeInterval: 10.0, target: self, selector: #selector(self.changeImage), userInfo: nil, repeats: true)
+        }
 
     }
     func centerMapOnLocation(location: CLLocation) {
         let coordinateRegion = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: regionRadius, longitudinalMeters: regionRadius)
         ubicationMapView.setRegion(coordinateRegion, animated: true)
     }
+    @objc func changeImage(){
+        if count < (place?.photos.count)!{
+            let index = IndexPath.init(item: count, section: 0)
+            self.imagesCollectionView.scrollToItem(at: index, at: .centeredHorizontally, animated: true)
+            pageControl.currentPage = count
+            count += 1
+        }else{
+            count = 0
+            let index = IndexPath.init(item: count, section: 0)
+            self.imagesCollectionView.scrollToItem(at: index, at: .centeredHorizontally, animated: false)
+            pageControl.currentPage = count
+            count = 1
+        }
+    }
 
     @IBAction func setVisitedPlace(_ sender: Any) {
-        var dateSelected = Date()
+        var dateSelected = modelController.getCurrentDateTimeZone()
             let vc = UIViewController()
             vc.preferredContentSize = CGSize(width: 250,height: 300)
             let pickerView = UIDatePicker(frame: CGRect(x: 0, y: 0, width: 250, height: 300))
@@ -82,7 +102,7 @@ class PlaceViewController: UIViewController {
     @IBAction func setPlannedPlace(_ sender: Any) {
         
         
-        var dateSelected = Date()
+        var dateSelected = modelController.getCurrentDateTimeZone()
         let vc = UIViewController()
         vc.preferredContentSize = CGSize(width: 250,height: 300)
         let pickerView = UIDatePicker(frame: CGRect(x: 0, y: 0, width: 250, height: 300))
@@ -104,11 +124,6 @@ class PlaceViewController: UIViewController {
                     }
                 }
             })
-            self.modelController.deletePlannedPlace(place: placeVisited, completion: { bool, error in
-                if (error != nil){
-                    print("Error while removing planned place: \(String(describing: error?.localizedDescription))")
-                }
-            })
             
         }
         let editUnitsAlert = UIAlertController(title: "Select the visited date", message: "", preferredStyle: UIAlertController.Style.alert)
@@ -121,19 +136,21 @@ class PlaceViewController: UIViewController {
             self.present(editUnitsAlert, animated: true)
         }
         
-        modelController.wasPlacePlannedBefore(place: place!, completion: { date, error in
-            if let date = date {
+        modelController.wasPlacePlannedBefore(place: place!, completion: { planneDate, error in
+            if let planneDate = planneDate {
                 let dateFormatterPrint = DateFormatter()
                 dateFormatterPrint.dateFormat = "dd MMM,yyyy"
-                let formatDate = dateFormatterPrint.string(from: date)
+                let formatDate = dateFormatterPrint.string(from: planneDate)
                 let questionAlert = UIAlertController(title: "You have already planned it!", message: "You have schedule your visit to \(self.place!.name) on \(formatDate). Do you want to reschedule it?", preferredStyle: UIAlertController.Style.alert)
                 questionAlert.addAction(UIAlertAction(title: "No", style: .cancel, handler: nil))
                 questionAlert.addAction(yesAction)
-                pickerView.setDate(date, animated: true)
+                pickerView.setDate(planneDate, animated: true)
                 self.present(questionAlert, animated: true)
             }
             else{
-                self.present(editUnitsAlert, animated: true)
+                if (self.presentedViewController == nil) {
+                    self.present(editUnitsAlert, animated: true)
+                }
             }
             
         })
@@ -152,4 +169,10 @@ extension PlaceViewController : UICollectionViewDelegate, UICollectionViewDataSo
             return cell
         
     }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+
+            return CGSize(width: collectionView.frame.size.width, height: collectionView.frame.size.height)
+        }
+        
 }

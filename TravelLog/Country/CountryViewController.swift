@@ -92,7 +92,7 @@ extension CountryViewController : UICollectionViewDelegate, UICollectionViewData
         if(self.placeCollectionView == collectionView){
             let padding: CGFloat = 10
             let collectionCellSize = collectionView.frame.size.width - padding
-            return CGSize(width: collectionCellSize/2, height: collectionCellSize*0.70)
+            return CGSize(width: collectionCellSize/2, height: collectionCellSize*0.80)
             
         }
         else{

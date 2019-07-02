@@ -19,7 +19,7 @@ class PlaceCollectionViewCell: UICollectionViewCell {
         placeCategoryLabel.numberOfLines = 3
         super.layoutSubviews()
         placeImageView.layer.cornerRadius = placeImageView.frame.width / 2.0
-        placeImageView.layer.masksToBounds = true
+       // placeImageView.layer.masksToBounds = true
         
         infoView.layer.borderWidth = 2.0
         infoView.layer.borderColor = UIColor(red:255/255.0, green:135.0/255.0, blue:107.0/255.0, alpha: 1.0).cgColor

@@ -23,13 +23,29 @@ class LoginViewController: UIViewController {
             if user != nil{
                 self.performSegue(withIdentifier: "goToMain", sender: nil)
                 
-            }else{
-                let alert = UIAlertController(title: "Fail to login", message: "Your login have faild", preferredStyle: .alert)
-                
-                alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-                
-                self.present(alert, animated: true)
-                print("ERROR: An error has ocurred while login: \(error.debugDescription)")
+            }
+            if let error = error {
+                if let errCode = AuthErrorCode(rawValue: error._code) {
+                    var errorMessage = "Your login have faild"
+                    switch errCode {
+                    case .invalidEmail:
+                        errorMessage = "Invalid password/email"
+                    case .userNotFound:
+                        errorMessage = "Account not found for the specified user. Please check and try again"
+                    case .missingEmail:
+                        errorMessage = "Email must not be empty"
+                    case .wrongPassword:
+                        errorMessage = "Invalid password/email"
+                    default:
+                        errorMessage = "Your login have faild"
+                    }
+                    let alert = UIAlertController(title: "Fail to login", message: errorMessage, preferredStyle: .alert)
+                    
+                    alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+                    
+                    self.present(alert, animated: true)
+                    print("ERROR: An error has ocurred while login: \(error.localizedDescription)")
+                }
             }
         }
     }

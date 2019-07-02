@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "29.png",
+      "filename" : "no_results_found.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "icons8-al-rededor-del-mundo-51.png",
+      "filename" : "no_results_found-1.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "76.png",
+      "filename" : "no_results_found-2.png",
       "scale" : "3x"
     }
   ],

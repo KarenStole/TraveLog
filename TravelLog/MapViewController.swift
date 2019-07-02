@@ -12,7 +12,7 @@ import MapKit
 class MapViewController: UIViewController {
 
     var places : [VisitedPlaces] = []
-    let annotation = MKPointAnnotation()
+   // let annotation = MKPointAnnotation()
     var annotations :[MKPointAnnotation] = []
     var zoomRect :MKMapRect = MKMapRect.null
     @IBOutlet weak var mapView: MKMapView!
@@ -25,6 +25,7 @@ class MapViewController: UIViewController {
         let dateFormatterPrint = DateFormatter()
         dateFormatterPrint.dateFormat = "dd MMM,yyyy"
         for place in places {
+            let annotation = MKPointAnnotation()
             annotation.coordinate = CLLocationCoordinate2D(latitude: (place.places.lat), longitude: (place.places.long))
             annotation.title = place.places.name
             annotation.subtitle = dateFormatterPrint.string(from: place.date)

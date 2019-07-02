@@ -29,13 +29,29 @@ class RegisterViewController: UIViewController {
                 self.present(alert, animated: true)
                 self.performSegue(withIdentifier: "goToMain", sender: nil)
 
-            }else{
-                let alert = UIAlertController(title: "Fail to register", message: "Your registration have faild", preferredStyle: .alert)
-                
-                alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-                
-                self.present(alert, animated: true)
-                print("ERROR: An error has ocurred while registration: \(error.debugDescription)")
+            }
+            if let error = error {
+                if let errCode = AuthErrorCode(rawValue: error._code) {
+                    var errorMessage = "Your registre have faild"
+                    switch errCode {
+                    case .invalidEmail:
+                        errorMessage = "Invalid email"
+                    case .emailAlreadyInUse:
+                        errorMessage = "The email is already in use with another account"
+                    case .missingEmail:
+                        errorMessage = "Email must not be empty"
+                    case .weakPassword:
+                        errorMessage = "Your password is too weak. The password must be 6 characters long or more."
+                    default:
+                        errorMessage = "Your registre have faild. Please try again"
+                    }
+                    let alert = UIAlertController(title: "Fail to register", message: errorMessage, preferredStyle: .alert)
+                    
+                    alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+                    
+                    self.present(alert, animated: true)
+                    print("ERROR: An error has ocurred while registre: \(error.localizedDescription)")
+                }
             }
         }
     }

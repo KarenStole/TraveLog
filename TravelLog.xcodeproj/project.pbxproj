@@ -16,6 +16,7 @@
 		2C6EF50522C810BE005A3421 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6EF50422C810BE005A3421 /* MapViewController.swift */; };
 		2C6EF50722C83EBF005A3421 /* SwfitGif.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6EF50622C83EBF005A3421 /* SwfitGif.swift */; };
 		2C6EF50922C83F6A005A3421 /* travelog03.gif in Resources */ = {isa = PBXBuildFile; fileRef = 2C6EF50822C83F6A005A3421 /* travelog03.gif */; };
+		2C6F313122C988800083251A /* LocalNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6F313022C988800083251A /* LocalNotificationManager.swift */; };
 		2C7016FE22A9D0CF00BE03B5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7016FD22A9D0CF00BE03B5 /* AppDelegate.swift */; };
 		2C70170022A9D0CF00BE03B5 /* ViewControllerHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7016FF22A9D0CF00BE03B5 /* ViewControllerHome.swift */; };
 		2C70170322A9D0CF00BE03B5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2C70170122A9D0CF00BE03B5 /* Main.storyboard */; };
@@ -68,6 +69,7 @@
 		2C6EF50422C810BE005A3421 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		2C6EF50622C83EBF005A3421 /* SwfitGif.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwfitGif.swift; sourceTree = "<group>"; };
 		2C6EF50822C83F6A005A3421 /* travelog03.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = travelog03.gif; sourceTree = "<group>"; };
+		2C6F313022C988800083251A /* LocalNotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalNotificationManager.swift; sourceTree = "<group>"; };
 		2C7016FA22A9D0CF00BE03B5 /* TravelLog.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TravelLog.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C7016FD22A9D0CF00BE03B5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2C7016FF22A9D0CF00BE03B5 /* ViewControllerHome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerHome.swift; sourceTree = "<group>"; };
@@ -184,6 +186,7 @@
 				2C0FAA2522B190EF0073047B /* GoogleService-Info.plist */,
 				2C1926B022B9B970000BEE93 /* ModelManager.swift */,
 				2C6EF50422C810BE005A3421 /* MapViewController.swift */,
+				2C6F313022C988800083251A /* LocalNotificationManager.swift */,
 			);
 			path = TravelLog;
 			sourceTree = "<group>";
@@ -548,6 +551,7 @@
 			files = (
 				2C1926AB22B9B39E000BEE93 /* Country.swift in Sources */,
 				2CDFC7AB22B68DFB0008C60D /* MyPlacesCollectionViewCell.swift in Sources */,
+				2C6F313122C988800083251A /* LocalNotificationManager.swift in Sources */,
 				2CEEFF6822BFC52A0034C4DB /* PlaceImagesCollectionViewCell.swift in Sources */,
 				2CEEFF6622BFC2540034C4DB /* PlaceViewController.swift in Sources */,
 				2CDFC7AF22B734CC0008C60D /* CountryCollectionViewCell.swift in Sources */,

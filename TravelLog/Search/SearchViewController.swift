@@ -20,6 +20,19 @@ class SearchViewController: UIViewController {
     @IBOutlet weak var countryTableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.hideKeyboardWhenTappedAround()
+    
+}
+    func hideKeyboardWhenTappedAround() {
+        let tap: UITapGestureRecognizer =     UITapGestureRecognizer(target: self, action:    #selector(dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
         modelController.getCountriesFromDatabase (completion: { countries, error in
             if let countries = countries{
                 self.listOfCountries = countries
@@ -31,7 +44,7 @@ class SearchViewController: UIViewController {
                 self.present(alert, animated: true)
                 print("LOG ERROR: Error loading countries: \(error.localizedDescription)")
             }
-
+            
         })
         modelController.getPlacesFromDatabase(completion: { places, error in
             if let places = places{
@@ -47,8 +60,7 @@ class SearchViewController: UIViewController {
             
         })
     }
-    
-}
+    }
 
 
 extension SearchViewController: UITableViewDataSource, UITableViewDelegate, DetailTableViewCellDelegate {

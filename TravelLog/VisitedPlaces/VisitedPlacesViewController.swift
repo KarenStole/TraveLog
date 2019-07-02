@@ -15,22 +15,33 @@ class VisitedPlacesViewController: UIViewController {
     
     @IBOutlet weak var placesVisitedCollectionView: UICollectionView!
     
+    @IBOutlet weak var noPlacesVisitedLabel: UICollectionView!
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        // Do any additional setup after loading the view.
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        noPlacesVisitedLabel.isHidden = true
         modelController.getPlacesFromDatabase(completion: { places, error in
             if let places = places{
                 self.modelController.getPlacesIDVisitedByUID(uid: self.modelController.userID, places: places, completion: { visitedPlaces, error in
                     if let visitedPlace = visitedPlaces{
+                        if(visitedPlace.isEmpty){
+                            self.noPlacesVisitedLabel.isHidden = false
+                        }
                         self.visitedPlaces = visitedPlace
                         self.placesVisitedCollectionView.reloadData()
                     }
                     if let error = error{
+                        self.noPlacesVisitedLabel.isHidden = false
                         let alert = UIAlertController(title: "Something went wrong!", message: "Sorry, we're having some problems. Retry in some minutes", preferredStyle: .alert)
                         alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
                         self.present(alert, animated: true)
                         print("LOG ERROR: Error loading visitedPlaces: \(error.localizedDescription)")
                     }
-
+                    
                 }
                 )
                 
@@ -43,7 +54,6 @@ class VisitedPlacesViewController: UIViewController {
             }
             
         })
-        // Do any additional setup after loading the view.
     }
     
     @IBAction func goToMap(_ sender: Any) {
