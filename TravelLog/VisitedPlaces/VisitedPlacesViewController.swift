@@ -5,7 +5,10 @@
 //  Created by Jose Soarez on 6/13/19.
 //  Copyright © 2019 Jose Soarez. All rights reserved.
 //
-
+/*
+ View Controller in charge of present the views of the Visited Places section.
+ List the places which the user visited before
+ */
 import UIKit
 import FirebaseAuth
 
@@ -23,7 +26,11 @@ class VisitedPlacesViewController: UIViewController {
 
         // Do any additional setup after loading the view.
     }
-    
+    /*
+     Get the list of visited places from firebase database.
+     If there is no results, no result's label is shown.
+     If an error comes, an alert is shown
+     */
     override func viewWillAppear(_ animated: Bool) {
         modelController.userID = (Auth.auth().currentUser?.uid)!
         noPlacesVisitedLabel.isHidden = true
@@ -78,6 +85,12 @@ extension VisitedPlacesViewController : UICollectionViewDelegate, UICollectionVi
         cell.visitDateLabel.text = dateFormatterPrint.string(from: visitedPlaces[indexPath.row].date)
         return cell
     }
+    
+    /*
+     This VC shows two differets VC depends from the option selected.
+     If the Map's button is touched, MapViewController is shown passing the list of visited places.
+     If a cell is touched, PlaceViewController to show the information of the place
+     */
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         

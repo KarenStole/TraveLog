@@ -10,6 +10,10 @@ import UIKit
 import Kingfisher
 import FirebaseAuth
 
+/*
+ VC that list all the countries form the DB. Allowing to search and go to country
+ description
+ */
 class SearchViewController: UIViewController {
     let modelController = ModelManager.sharedModelManager
     var listOfCountries: [Country] = []
@@ -19,22 +23,15 @@ class SearchViewController: UIViewController {
     var currentCountry : Country? = nil
 
     @IBOutlet weak var countryTableView: UITableView!
+    @IBOutlet weak var searchBar: UISearchBar!
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.hideKeyboardWhenTappedAround()
-    
+    searchBar.delegate = self
 }
-    func hideKeyboardWhenTappedAround() {
-        let tap: UITapGestureRecognizer =     UITapGestureRecognizer(target: self, action:    #selector(dismissKeyboard))
-        tap.cancelsTouchesInView = false
-        view.addGestureRecognizer(tap)
-    }
-    @objc func dismissKeyboard() {
-        view.endEditing(true)
-    }
+
     
     override func viewWillAppear(_ animated: Bool) {
-        
+     //Getting all the countries from the database
         modelController.getCountriesFromDatabase (completion: { countries, error in
             if let countries = countries{
                 self.listOfCountries = countries
@@ -48,6 +45,8 @@ class SearchViewController: UIViewController {
             }
             
         })
+        
+        //Getting all the places from the database. Each place has its country's id
         modelController.getPlacesFromDatabase(completion: { places, error in
             if let places = places{
                 self.listOfPlaces = places
@@ -84,6 +83,7 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate, Deta
             for countries in listOfCountries{
                 for contryName in searchCountry{
                     if(contryName == countries.name){
+                        //Filter all the flaces for current country
                         let placesOfTheCountry = self.listOfPlaces.filter { (arg0) -> Bool in
                             let (country) = arg0
                             return country.countryID == countries.id
@@ -99,6 +99,7 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate, Deta
             }
         }
         else{
+            //Filter all the flaces for current country
             let placesOfTheCountry = self.listOfPlaces.filter { (arg0) -> Bool in
                 let (country) = arg0
                 return country.countryID == listOfCountries[indexPath.row].id
@@ -117,6 +118,8 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate, Deta
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 107.0;//Choose your custom row height
     }
+    
+    //Pass to the CountryViewController the country to be shown
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if segue.destination is CountryViewController{
@@ -147,6 +150,12 @@ extension SearchViewController : UISearchBarDelegate{
         else{
             searchActive = false}
         countryTableView.reloadData()
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar)
+    {
+        searchActive = false;
+        self.searchBar.endEditing(true)
     }
     
 }

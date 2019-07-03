@@ -170,7 +170,6 @@
 		2C7016FC22A9D0CF00BE03B5 /* TravelLog */ = {
 			isa = PBXGroup;
 			children = (
-				2CB47C8422C0198700BE7722 /* PlannedPlaces */,
 				2C1926AC22B9B444000BEE93 /* Places */,
 				2CE7A8A922B30EC800ECFBE5 /* VisitedPlaces */,
 				2CE7A8A822B30EB000ECFBE5 /* Country */,
@@ -206,13 +205,6 @@
 				2C70171F22A9D0D200BE03B5 /* Info.plist */,
 			);
 			path = TravelLogUITests;
-			sourceTree = "<group>";
-		};
-		2CB47C8422C0198700BE7722 /* PlannedPlaces */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = PlannedPlaces;
 			sourceTree = "<group>";
 		};
 		2CE7A8A522B30E1E00ECFBE5 /* Main */ = {

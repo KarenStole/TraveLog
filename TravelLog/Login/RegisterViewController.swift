@@ -9,32 +9,43 @@
 import UIKit
 import Firebase
 
-class RegisterViewController: UIViewController {
+class RegisterViewController: UIViewController, UITextFieldDelegate{
 
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     override func viewDidLoad() {
         super.viewDidLoad()
-        hideKeyboardWhenTappedAround()
+        emailTextField.delegate = self
+        passwordTextField.delegate = self
         // Do any additional setup after loading the view.
     }
-    func hideKeyboardWhenTappedAround() {
-        let tap: UITapGestureRecognizer =     UITapGestureRecognizer(target: self, action:    #selector(dismissKeyboard))
-        tap.cancelsTouchesInView = false
-        view.addGestureRecognizer(tap)
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if(textField == emailTextField){
+            emailTextField.resignFirstResponder()
+            return true
+        }
+        else{
+            emailTextField.resignFirstResponder()
+            return true
+        }
     }
-    @objc func dismissKeyboard() {
-        view.endEditing(true)
-    }
+    
+    /*
+     Register the user. Controls the diferents cases of errors
+     */
     @IBAction func registerButtomPressed(_ sender: Any) {
         Auth.auth().createUser(withEmail: emailTextField.text!, password: passwordTextField.text!){ (user, error) in
             if user != nil{
                 let alert = UIAlertController(title: "Succesfull register", message: "Welcome to TravelLog", preferredStyle: .alert)
                 
-                alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-                
+
+                let okAction = UIAlertAction(title: "Ok", style: UIAlertAction.Style.default) {
+                    UIAlertAction in
+                    self.performSegue(withIdentifier: "goToMain", sender: nil)
+                }
+                alert.addAction(okAction)
                 self.present(alert, animated: true)
-                self.performSegue(withIdentifier: "goToMain", sender: nil)
+                
 
             }
             if let error = error {

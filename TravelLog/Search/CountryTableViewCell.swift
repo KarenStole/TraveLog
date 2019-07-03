@@ -20,6 +20,7 @@ class CountryTableViewCell: UITableViewCell {
 
     
     override func layoutSubviews(){
+        //Seting 3 lines for the description's label
         descriptionLabel.numberOfLines = 3
         }
 

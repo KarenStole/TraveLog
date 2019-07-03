@@ -8,6 +8,10 @@
 
 import Foundation
 import  UserNotifications
+
+/*
+ Manager for the local notification.
+ */
 struct Notification {
     var id:String
     var title:String

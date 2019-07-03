@@ -21,6 +21,9 @@ class ModelManager {
     private init(){
     }
     
+    /*
+        Get all the countries from the database
+     */
     func getCountriesFromDatabase(completion: @escaping ([Country]?, Error?) -> Void){
         var countries : [Country] = []
         ref = Database.database().reference()
@@ -42,6 +45,7 @@ class ModelManager {
         //return countries
     }
     
+    /*Get all the places from the database */
     func getPlacesFromDatabase(completion: @escaping ([Place]?, Error?) -> Void){
         var countries : [Place] = []
         ref = Database.database().reference()
@@ -62,7 +66,9 @@ class ModelManager {
         }
         //return countries
     }
-    
+    /*
+     Helper: Retun the list of county names, with a list of countries given
+     */
     func getCountriesName(countries : [Country]) -> [String] {
         var countriesNames : [String] = []
         for country in countries{
@@ -70,7 +76,9 @@ class ModelManager {
         }
         return countriesNames
     }
-    
+    /*
+     Get all the places visited of the current user. Filtered by uid
+     */
     func getPlacesIDVisitedByUID (uid: String, places: [Place], completion: @escaping ([VisitedPlaces]?, Error?) -> Void){
         var placesVisited : [VisitedPlaces] = []
         let dateFormatter = DateFormatter()
@@ -99,6 +107,9 @@ class ModelManager {
         }
     }
     
+    /*
+     Get all the places planned of the current user. Filtered by uid
+     */
     func getPlacesIDPlanedByUID (uid: String, places: [Place], completion: @escaping ([VisitedPlaces]?, Error?) -> Void){
         var placesVisited : [VisitedPlaces] = []
         let dateFormatter = DateFormatter()
@@ -127,11 +138,13 @@ class ModelManager {
         }
     }
     
+    /*Save a place visited for the specific user loged*/
     func saveVisitedPlaces (place: VisitedPlaces){
         ref = Database.database().reference()
         ref.child("placesVisited").child("placesVisited").childByAutoId().setValue(["userID": self.userID, "date":         String(describing: place.date), "placeID": place.places.id])
     }
     
+/*Save a place planned for the specific user loged*/
     func savePlannedPlaces (place: VisitedPlaces){
         let calendar1 = Calendar.current
         ref = Database.database().reference()
@@ -143,6 +156,9 @@ class ModelManager {
         })
     }
     
+    /*
+     Update the data from the visited place (such is the date) if the place was visited before. Returns a bool indicating if the places was visited
+     */
     func updateVisitedPlaces (place: VisitedPlaces, completion: @escaping (Bool?, Error?) -> Void){
         var wasPreviousVisited = false
         var count = 0
@@ -161,6 +177,10 @@ class ModelManager {
         }){(error) in completion(nil, error)}
     }
     
+    
+    /*
+     Update the data from the planned place (such is the date) if the place was planned before. Returns a bool indicating if the places was visited
+     */
     func updatePlannedPlaces (place: VisitedPlaces, completion: @escaping (Bool?, Error?) -> Void){
         var wasPreviousVisited = false
         var count = 0
@@ -179,6 +199,9 @@ class ModelManager {
         }){(error) in completion(nil, error)}
     }
     
+    /*
+     Query if a specific place was planned. If it was, return the date from the DB
+     */
     func wasPlacePlannedBefore (place: Place, completion: @escaping (Date?, Error?) -> Void){
         var visitedPlace = self.getCurrentDateTimeZone()
         let dateFormatter = DateFormatter()
@@ -202,7 +225,9 @@ class ModelManager {
         }){(error) in completion(nil, error)}
     }
 
-    
+    /*
+     Deleted a specific planned place
+     */
     func deletePlannedPlace(place: VisitedPlaces, completion: @escaping (Bool?, Error?) -> Void){
         var wasPreviousPlanned = false
         var count = 0
@@ -221,6 +246,9 @@ class ModelManager {
         }){(error) in completion(nil, error)}
     }
     
+    /*
+     Get the list of places which the user didnt visit or plan.
+     */
     func getNoVisitedPlacesVisitedOrPlanned(completion: @escaping ([Place]?, Error?) -> Void){
         var noPlacesVisited : [Place] = []
         getPlacesFromDatabase(completion: {places, error in
@@ -265,7 +293,8 @@ class ModelManager {
         
     }
     
-    func getCurrentDateTimeZone() -> Date{
+    /*Get the current date in the actual time zone*/
+   func getCurrentDateTimeZone() -> Date{
         let currentDate = Date()
         
         // 1) Get the current TimeZone's seconds from GMT. Since I am in Chicago this will be: 60*60*5 (18000)
@@ -285,24 +314,7 @@ class ModelManager {
         return timeZoneOffsetDate
     }
     
-    func convertToCurrentTimeZone(date : Date) -> Date{
-        
-        // 1) Get the current TimeZone's seconds from GMT. Since I am in Chicago this will be: 60*60*5 (18000)
-        let timezoneOffset =  TimeZone.current.secondsFromGMT()
-        
-        // 2) Get the current date (GMT) in seconds since 1970. Epoch datetime.
-        let epochDate = date.timeIntervalSince1970
-        
-        // 3) Perform a calculation with timezoneOffset + epochDate to get the total seconds for the
-        //    local date since 1970.
-        //    This may look a bit strange, but since timezoneOffset is given as -18000.0, adding epochDate and timezoneOffset
-        //    calculates correctly.
-        let timezoneEpochOffset = (epochDate + Double(timezoneOffset))
-        
-        // 4) Finally, create a date using the seconds offset since 1970 for the local date.
-        let timeZoneOffsetDate = Date(timeIntervalSince1970: timezoneEpochOffset)
-        return timeZoneOffsetDate
-    }
+
     
     func signOut(){
         let firebaseAuth = Auth.auth()

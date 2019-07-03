@@ -31,7 +31,7 @@ class PlaceViewController: UIViewController {
     @IBOutlet weak var pageControl: UIPageControl!
     
     /*
-     Seting the views values, such as labels values, map annotations, and automatic banner
+     Setting the views values, such as labels values, map annotations, and automatic banner
      */
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,6 +51,10 @@ class PlaceViewController: UIViewController {
         }
 
     }
+    /*
+     Getting the current user id in orther to mark the place to visited or
+     to schedule a trip
+     */
     override func viewWillAppear(_ animated: Bool) {
         modelController.userID = (Auth.auth().currentUser?.uid)!
     }
@@ -63,7 +67,9 @@ class PlaceViewController: UIViewController {
         ubicationMapView.setRegion(coordinateRegion, animated: true)
     }
     
-    /**/
+    /*
+     Change the image from the slider of the VC automaticlly
+     */
     @objc func changeImage(){
         if count < (place?.photos.count)!{
             let index = IndexPath.init(item: count, section: 0)
@@ -78,7 +84,13 @@ class PlaceViewController: UIViewController {
             count = 1
         }
     }
-
+/*
+     Action of the Visited's button.
+     If the place was visited before, it update the date form the DB (a pickerview is shown in order to choose the date)
+     If the place was planned, automacticlly seted as visited
+     If the place was not visited nither planned, just add the data in the DB
+     The picker only accept date before o the same current date
+     */
     @IBAction func setVisitedPlace(_ sender: Any) {
         var dateSelected = modelController.getCurrentDateTimeZone()
             let vc = UIViewController()
@@ -116,6 +128,14 @@ class PlaceViewController: UIViewController {
             present(editUnitsAlert, animated: true)
        
     }
+    
+    /*
+     Action for the Plan's button.
+     If the place was planned before, an alert is shown telling the user the
+     date previous schedule. If the user indicate yes, the date is updated. Else the alert is just closen.
+     If the place wasnt planed before, just choose the date from a picker and the data is saved
+     The picker only accept date after o the same current date
+     */
     @IBAction func setPlannedPlace(_ sender: Any) {
         
         

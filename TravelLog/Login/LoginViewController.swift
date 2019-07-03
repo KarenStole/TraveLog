@@ -9,26 +9,32 @@
 import UIKit
 import Firebase
 
-class LoginViewController: UIViewController {
+class LoginViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     override func viewDidLoad() {
         super.viewDidLoad()
-        hideKeyboardWhenTappedAround()
+        emailTextField.delegate = self
+        passwordTextField.delegate = self
         // Do any additional setup after loading the view.
     }
     
-    func hideKeyboardWhenTappedAround() {
-        let tap: UITapGestureRecognizer =     UITapGestureRecognizer(target: self, action:    #selector(dismissKeyboard))
-        tap.cancelsTouchesInView = false
-        view.addGestureRecognizer(tap)
-    }
-    @objc func dismissKeyboard() {
-        view.endEditing(true)
+    //Hide the keyboard when the return in clicked
+   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if(textField == emailTextField){
+            emailTextField.resignFirstResponder()
+            return true
+        }
+        else{
+            emailTextField.resignFirstResponder()
+            return true
+        }
     }
     
-    
+    /*
+     Login the user. Controls the diferents cases of errors
+     */
     @IBAction func loginButtomPressed(_ sender: Any) {
         Auth.auth().signIn(withEmail: emailTextField.text!, password: passwordTextField.text!){ (user, error) in
             if user != nil{

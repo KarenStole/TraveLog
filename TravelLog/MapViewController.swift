@@ -8,7 +8,9 @@
 
 import UIKit
 import MapKit
-
+/*
+ VC that show a Map with all the visited places in
+ */
 class MapViewController: UIViewController {
 
     var places : [VisitedPlaces] = []

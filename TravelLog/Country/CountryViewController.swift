@@ -6,6 +6,11 @@
 //  Copyright © 2019 Jose Soarez. All rights reserved.
 //
 
+/*
+ VC that shows the list of places from the country selected. Also shows a slider
+ with images from the place
+ */
+
 import UIKit
 
 class CountryViewController: UIViewController {
@@ -52,6 +57,11 @@ class CountryViewController: UIViewController {
 }
 extension CountryViewController : UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
     
+    
+    /*
+     In this VC is used two collection views, with differents data (slider and
+     list of places)
+     */
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if segue.destination is PlaceViewController{

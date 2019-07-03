@@ -10,7 +10,9 @@ import UIKit
 import Kingfisher
 import UserNotifications
 import FirebaseAuth
-
+/*
+ The main VC shows the recommended places to visit. Also the option to logout
+ */
 class MainViewController: UIViewController {
     let manager = LocalNotificationManager()
     let modelManager = ModelManager.sharedModelManager
@@ -19,6 +21,9 @@ class MainViewController: UIViewController {
     @IBOutlet weak var recomendatonCollectionView: UICollectionView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        /*
+         Schedule all the notification for the planned places for today.
+         */
         var count = 0
         let calendar1 = Calendar.current
         modelManager.getPlacesFromDatabase(completion: {places, error in
@@ -38,6 +43,11 @@ class MainViewController: UIViewController {
         })
 
     }
+    
+    /*
+     Show the recommended places. Those are the ones how the user didnt visit or schedule.
+     If there isnt any items with the previous filter, a list of 10 random places is shown
+     */
     override func viewWillAppear(_ animated: Bool) {
         self.modelManager.userID = (Auth.auth().currentUser?.uid)!
         
@@ -66,6 +76,9 @@ class MainViewController: UIViewController {
 
     }
     
+    /*
+     Logout action
+     */
     @IBAction func logOut(_ sender: Any) {
         modelManager.signOut()
         performSegue(withIdentifier: "goToLogin", sender: self)
